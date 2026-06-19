@@ -336,7 +336,7 @@ static int smsg_ipc_smem_init(struct smsg_ipc *ipc)
 	if (ipc->type != SIPC_BASE_MBOX) {
 		ipc->ring_base = smem_alloc(ipc->dst, SZ_4K);
 		ipc->ring_size = SZ_4K;
-		pr_info("%s: ring_base = 0x%x, ring_size = 0x%x\n", __func__,
+		pr_info("%s: ring_base = 0x%lx, ring_size = 0x%x\n", __func__,
 			ipc->ring_base, ipc->ring_size);
 	}
 
@@ -860,7 +860,9 @@ int smsg_recv(u8 dst, struct smsg *msg, int timeout)
 			goto recv_failed;
 		}
 	} else if (timeout < 0) {
-		mutex_lock_interruptible(&ch->rxlock);
+		int resp = mutex_lock_interruptible(&ch->rxlock);
+		pr_info("%s: dst=%d, channel=%d, timeout=%d, ch_index = %d, resp = %d\n",
+						 __func__, dst, msg->channel, timeout, ch_index, resp);
 		/* wait forever */
 		rval = wait_event_interruptible(
 			ch->rxwait,
@@ -882,7 +884,8 @@ int smsg_recv(u8 dst, struct smsg *msg, int timeout)
 			goto recv_failed;
 		}
 	} else {
-		mutex_lock_interruptible(&ch->rxlock);
+		int resp = mutex_lock_interruptible(&ch->rxlock);
+		if (resp) { }
 		/* wait timeout */
 		rval = wait_event_interruptible_timeout(
 			ch->rxwait,

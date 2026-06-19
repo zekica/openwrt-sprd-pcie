@@ -4,7 +4,7 @@
 EXTRA_CFLAGS += -Wno-error -Wno-packed-bitfield-compat -Wno-unused-result -Wno-format
 ccflags-y += -DCONFIG_SPRD_PCIE_EP_DEVICE
 ccflags-y += -DCONFIG_SPRD_SIPA
-
+ccflags-y += -DDEBUG
 
 ########## Option feature ##########
 # For NSS feature of some Qualcom platform(eg.ipq5018)
@@ -16,7 +16,8 @@ ccflags-y += -DCONFIG_SPRD_SIPA
 ccflags-y += -DCONFIG_SPRD_ETHERNET
 
 # For pcie msi type interrupt
-#ccflags-y += -DCONFIG_PCI_IRQ_MSI
+# ccflags-y += -DCONFIG_PCI_IRQ_MSI
+# ccflags-y += -DCONFIG_PCI_MSI
 
 # For big endian platform
 #ccflags-y += -DCONFIG_SIPC_BIG_TO_LITTLE

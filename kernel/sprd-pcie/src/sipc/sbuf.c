@@ -320,7 +320,7 @@ static int sbuf_host_init(struct smsg_ipc *sipc, struct sbuf_mgr *sbuf,
 		sbuf->smem_addr - sipc->smem_base + sipc->dst_smem_base;
 
 	pr_debug(
-		"%s: channel %d-%d, smem_addr=0x%x, smem_size=0x%x, dst_smem_addr=0x%x\n",
+		"%s: channel %d-%d, smem_addr=0x%lx, smem_size=0x%x, dst_smem_addr=0x%lx\n",
 		__func__, sbuf->dst, sbuf->channel, sbuf->smem_addr,
 		sbuf->smem_size, sbuf->dst_smem_addr);
 
@@ -1425,7 +1425,7 @@ void sbuf_get_status(u8 dst, char *status_info, int size)
 					phead = "select task";
 
 				snprintf(status_info + len, size - len,
-					 "%s %d: %s, state=0x%lx, pid=%d.\n",
+					 "%s %d: %s, state=0x%x, pid=%d.\n",
 					 phead, cnt, task->comm,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 14, 0))
 					 task->__state,
@@ -1508,7 +1508,7 @@ static void sbuf_debug_task_show(struct seq_file *m, struct sbuf_mgr *sbuf,
 				continue;
 
 			seq_printf(m, "  ring[%2d]: %s %d ", n, buf, cnt);
-			seq_printf(m, ": %s, state = 0x%lx, pid = %d\n",
+			seq_printf(m, ": %s, state = 0x%x, pid = %d\n",
 				   task->comm,
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 14, 0))
 				   task->__state,
@@ -1591,7 +1591,7 @@ static int sbuf_debug_show(struct seq_file *m, void *private)
 			seq_printf(m, "sbuf_%d_%03d, state: %d, force: %d",
 				   sbuf->dst, sbuf->channel, sbuf->state,
 				   sbuf->force_send);
-			seq_printf(m, "virt: 0x%lx, phy: 0x%0x, map: 0x%x",
+			seq_printf(m, "virt: 0x%lx, phy: 0x%0lx, map: 0x%lx",
 				   (unsigned long)sbuf->smem_virt,
 				   sbuf->smem_addr, sbuf->dst_smem_addr);
 			seq_printf(m, " size: 0x%0x, ringnr: %d\n",

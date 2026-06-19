@@ -694,7 +694,7 @@ static int sblock_thread(void *data)
 				smsg_send(sblock->dst, &mcmd, -1);
 				sblock->state = SBLOCK_STATE_READY;
 				recovery = 1;
-				pr_info("%s: channel %d-%d, SMSG_CMD_SBLOCK_INIT, dst address = 0x%x!\n",
+				pr_info("%s: channel %d-%d, SMSG_CMD_SBLOCK_INIT, dst address = 0x%lx!\n",
 					__func__, sblock->dst, sblock->channel,
 					sblock->dst_smem_addr);
 
@@ -1785,7 +1785,7 @@ static int sblock_debug_show(struct seq_file *m, void *private)
 			sipc_debug_putline(m, '*', 170);
 			seq_printf(
 				m,
-				"sblock dst %d, channel: %3d, state: %d, smem_virt: 0x%lx, smem_addr: 0x%0x, dst_smem_addr: 0x%0x, smem_size: 0x%0x, txblksz: %d, rxblksz: %d\n",
+				"sblock dst %d, channel: %3d, state: %d, smem_virt: 0x%lx, smem_addr: 0x%0lx, dst_smem_addr: 0x%0lx, smem_size: 0x%0x, txblksz: %d, rxblksz: %d\n",
 				sblock->dst, sblock->channel, sblock->state,
 				(unsigned long)sblock->smem_virt,
 				sblock->smem_addr, sblock->dst_smem_addr,
@@ -1855,6 +1855,7 @@ static const struct file_operations sblock_debug_fops = {
 	.release = single_release,
 };
 
+int sblock_init_debugfs(void *root);
 int sblock_init_debugfs(void *root)
 {
 	if (!root)

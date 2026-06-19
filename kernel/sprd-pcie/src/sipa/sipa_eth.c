@@ -516,6 +516,9 @@ static struct net_device_stats *sipa_eth_get_stats(struct net_device *dev)
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0))
 netdev_features_t sipa_eth_features_check(struct sk_buff *skb,
 					  struct net_device *dev,
+					  netdev_features_t features);
+netdev_features_t sipa_eth_features_check(struct sk_buff *skb,
+					  struct net_device *dev,
 					  netdev_features_t features)
 {
 	features &= ~(NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM | NETIF_F_HW_CSUM);
@@ -1035,6 +1038,7 @@ static void __init sipa_eth_debugfs_init(void)
 		pr_err("failed to create sipa_eth debugfs dir\n");
 }
 
+int sipa_eth_init(void);
 int sipa_eth_init(void)
 {
 	sipa_eth_debugfs_init();
@@ -1046,6 +1050,7 @@ int sipa_eth_init(void)
 }
 EXPORT_SYMBOL(sipa_eth_init);
 
+void sipa_eth_exit(void);
 void sipa_eth_exit(void)
 {
 	int i;

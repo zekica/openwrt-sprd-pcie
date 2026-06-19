@@ -19,6 +19,16 @@
 #include <linux/workqueue.h>
 #include <linux/version.h>
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 16, 0)
+#ifndef from_timer
+#define from_timer(var, callback_timer, timer_fieldname) \
+timer_container_of(var, callback_timer, timer_fieldname)
+#endif
+#ifndef del_timer
+#define del_timer(timer) timer_delete(timer)
+#endif
+#endif
+
 #include "../include/sprd_mpm.h"
 #include "../include/sipc.h"
 /*

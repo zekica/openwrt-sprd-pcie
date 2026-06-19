@@ -565,6 +565,7 @@ static void __init sipa_dummy_debugfs_init(void)
 		pr_err("failed to create sipa_dummy debugfs dir\n");
 }
 
+int sipa_dummy_init(void);
 int sipa_dummy_init(void)
 {
 	sipa_dummy_debugfs_init();
@@ -575,6 +576,7 @@ int sipa_dummy_init(void)
 }
 EXPORT_SYMBOL(sipa_dummy_init);
 
+void sipa_dummy_exit(void);
 void sipa_dummy_exit(void)
 {
 	platform_driver_unregister(&sipa_dummy_driver);

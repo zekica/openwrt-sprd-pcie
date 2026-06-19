@@ -311,7 +311,7 @@ int smem_init(uintptr_t smem_addr, uintptr_t dst_smem_addr, u32 size, u32 dst,
 		pr_err("Failed to add smem gen pool!\n");
 		return -1;
 	}
-	pr_info("%s: pool addr = 0x%x, size = 0x%x added.\n", __func__,
+	pr_info("%s: pool addr = 0x%lx, size = 0x%x added.\n", __func__,
 		spool->addr, spool->size);
 
 	if (mem_type == SMEM_PCIE) {
@@ -350,7 +350,7 @@ int smem_get_area(u8 dst, u32 *base, u32 *size)
 		return -EINVAL;
 	}
 
-	pr_info("%s: dst addr = 0x%x, size = 0x%x.\n", __func__,
+	pr_info("%s: dst addr = 0x%lx, size = 0x%x.\n", __func__,
 		spool->dst_addr, spool->size);
 
 	*base = (u32)spool->dst_addr;
@@ -511,13 +511,13 @@ static int smem_debug_show(struct seq_file *m, void *private)
 		seq_printf(m, "%d, dst:%d, name: %s, smem pool info:\n", cnt++,
 			   spool->dst, (smsg_ipcs[spool->dst])->name);
 		seq_printf(m,
-			   "phys_addr=0x%x, total=0x%x, used=0x%x, free=0x%x\n",
+			   "phys_addr=0x%lx, total=0x%x, used=0x%x, free=0x%x\n",
 			   spool->addr, spool->size, spool->used.counter,
 			   fsize);
 		seq_puts(m, "smem record list:\n");
 
 		list_for_each_entry (recd, &spool->smem_head, smem_list) {
-			seq_printf(m, "task %s: pid=%u, addr=0x%x, size=0x%x\n",
+			seq_printf(m, "task %s: pid=%u, addr=0x%lx, size=0x%x\n",
 				   recd->task->comm, recd->task->pid,
 				   recd->addr, recd->size);
 		}
@@ -538,6 +538,7 @@ static const struct file_operations smem_debug_fops = {
 	.release = single_release,
 };
 
+int smem_init_debugfs(void *root);
 int smem_init_debugfs(void *root)
 {
 	if (!root)

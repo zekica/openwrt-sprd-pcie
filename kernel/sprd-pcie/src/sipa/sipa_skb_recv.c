@@ -360,6 +360,7 @@ static void sipa_free_recv_skb(struct sipa_skb_receiver *receiver)
 	}
 }
 
+struct sk_buff *sipa_recv_skb(int *netid, int index);
 struct sk_buff *sipa_recv_skb(int *netid, int index)
 {
 	int ret = -1;
@@ -520,6 +521,7 @@ static int fill_recv_thread(void *data)
 	return 0;
 }
 
+bool sipa_check_recv_tx_fifo_empty(void);
 bool sipa_check_recv_tx_fifo_empty(void)
 {
 	struct sipa_core *ctrl = sipa_get_ctrl_pointer();
@@ -532,6 +534,7 @@ bool sipa_check_recv_tx_fifo_empty(void)
 }
 EXPORT_SYMBOL(sipa_check_recv_tx_fifo_empty);
 
+void sipa_receiver_open_cmn_fifo(struct sipa_skb_receiver *receiver);
 void sipa_receiver_open_cmn_fifo(struct sipa_skb_receiver *receiver)
 {
 	struct sipa_core *ctrl = sipa_get_ctrl_pointer();
@@ -579,6 +582,8 @@ static void sipa_receiver_init(struct sipa_skb_receiver *receiver, u32 rsvd)
 }
 
 void sipa_receiver_add_nic(struct sipa_skb_receiver *receiver,
+			   struct sipa_nic *nic);
+void sipa_receiver_add_nic(struct sipa_skb_receiver *receiver,
 			   struct sipa_nic *nic)
 {
 	int i;
@@ -594,6 +599,7 @@ void sipa_receiver_add_nic(struct sipa_skb_receiver *receiver,
 }
 EXPORT_SYMBOL(sipa_receiver_add_nic);
 
+void sipa_reinit_recv_array(struct sipa_skb_receiver *receiver);
 void sipa_reinit_recv_array(struct sipa_skb_receiver *receiver)
 {
 	if (!receiver) {
@@ -610,6 +616,8 @@ void sipa_reinit_recv_array(struct sipa_skb_receiver *receiver)
 	receiver->recv_array.wp = receiver->recv_array.depth;
 }
 
+int create_sipa_skb_receiver(struct sipa_endpoint *ep,
+			     struct sipa_skb_receiver **receiver_pp);
 int create_sipa_skb_receiver(struct sipa_endpoint *ep,
 			     struct sipa_skb_receiver **receiver_pp)
 {
@@ -658,6 +666,7 @@ int create_sipa_skb_receiver(struct sipa_endpoint *ep,
 }
 EXPORT_SYMBOL(create_sipa_skb_receiver);
 
+void destroy_sipa_skb_receiver(struct sipa_skb_receiver *receiver);
 void destroy_sipa_skb_receiver(struct sipa_skb_receiver *receiver)
 {
 	unsigned long flags;

@@ -333,9 +333,9 @@ static int sipc_parse_dt(struct smsg_ipc *ipc, struct device_node *np,
 		return -1;
 	}
 	pr_info("sipc init dma_alloc_coherent smem_hwaddr:%px, u32:%x\n",
-		smem_hwaddr, (u32)smem_hwaddr);
-	pr_info("sipc init dma_alloc_coherent smem_vaddr:%px, u64:%x\n",
-		smem_vaddr, (u64)(uintptr_t)smem_vaddr);
+		(void *)smem_hwaddr, (u32)smem_hwaddr);
+	pr_info("sipc init dma_alloc_coherent smem_vaddr:%px, u64:%llx\n",
+		(void *)smem_vaddr, (u64)(uintptr_t)smem_vaddr);
 
 	/* get name */
 	ipc->name = "sprd,sipc";
@@ -376,7 +376,7 @@ static int sipc_parse_dt(struct smsg_ipc *ipc, struct device_node *np,
 	ipc->smem_base = (uintptr_t)smem_vaddr;
 	ipc->dst_smem_base = (uintptr_t)smem_hwaddr;
 	ipc->smem_size = SHARE_MEM_SIZE;
-	pr_info("sipc: smem_base=0x%x, dst_smem_base=0x%x, smem_size=0x%x\n",
+	pr_info("sipc: smem_base=0x%lx, dst_smem_base=0x%lx, smem_size=0x%x\n",
 		ipc->smem_base, ipc->dst_smem_base, ipc->smem_size);
 
 #ifdef CONFIG_PHYS_ADDR_T_64BIT
